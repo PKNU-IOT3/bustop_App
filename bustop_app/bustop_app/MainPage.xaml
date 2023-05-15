@@ -1,90 +1,111 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>    
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="bustop_app.MainPage"
              xmlns:viewmodel="clr-namespace:bustop_app.ViewModel"
              x:DataType="viewmodel:MainViewModel">
 
-    <Grid RowDefinitions="100, Auto,*"
+    <Shell.TitleView>
+        <Grid BackgroundColor="#2c313c">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Text="BuSTOP!" Grid.Column="0" HorizontalOptions="Start" FontSize="Large" 
+                   VerticalTextAlignment="Center" TextColor="White" FontAttributes="Bold"
+                   Margin="10,0,0,0"/>
+        </Grid>
+    </Shell.TitleView>
+    
+    <Grid RowDefinitions="100, Auto,*,Auto"
           ColumnDefinitions=".75*,.25*"
           Padding="10"
           RowSpacing="10"
           ColumnSpacing="10">
-        
+
         <Image Grid.ColumnSpan="2" 
                Source="bustopimage.png"
                BackgroundColor="Transparent"/>
-        
-        <Entry Placeholder="Enter task"
+
+        <!--<Entry Placeholder="Enter task"
                Text="{Binding Text}"
-               Grid.Row="1"/>
+               Grid.Row="1"/>-->
 
-        <Button Text="Add"
-                Command="{Binding AddCommand}"
-                Grid.Row="1"
-                Grid.Column="1"/>
+        <!--아래 ListView 안의 Swipe 기능은 안드로이드 애뮬레이터로만 확인 및 사용 가능-->
+        <!--
+        <SwipeView>
+            <SwipeView.RightItems>
+                <SwipeItems>
+                    <SwipeItem Text="탑승 취소"
+                                               BackgroundColor="LightCoral"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
+                                               CommandParameter="{Binding .}"/>
+                    <SwipeItem Text="탑승 대기"
+                                               BackgroundColor="LightBlue"/>
+                </SwipeItems>
+            </SwipeView.RightItems>
+        </SwipeView>
+        -->
 
-        <CollectionView Grid.Row="2" Grid.ColumnSpan="2"
+        <Button x:Name="BtnSearch" Text="버스 정보 출력"
+                Command="{Binding SearchCommand}"
+                Grid.Row="1" Grid.Column="1" BackgroundColor="#2c313c"
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"/>
+
+        <ListView Grid.Row="2" Grid.ColumnSpan="2"
                         ItemsSource="{Binding Items}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type x:String}">
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="탑승 취소"
-                                           BackgroundColor="LightCoral"
-                                           Command="{Binding Source={RelativeSource AncestorLevel={x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
-                                           CommandParameter="{Binding .}"/>
-                                <SwipeItem Text="탑승 대기"
-                                           BackgroundColor="LightBlue"/>
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <Grid Padding="0,5">
-                            <Frame>
-                                <Label Text="{Binding .}"
-                                   FontSize="24"/>
-                            </Frame>
+            <ListView.Header>
+                <Grid IsVisible="{Binding IsHeaderVisible}" BackgroundColor="#16191d">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Text="버스 등록 번호" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="1" Text="버스 번호" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="2" Text="탑승 대기 인원" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="3" Text="배차 간격" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="4" Text="현재 탑승 인원" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid BackgroundColor="Gainsboro">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="{Binding Bus_idx}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="1" Text="{Binding Bus_num}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="2" Text="{Binding Bus_cnt}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="3" Text="{Binding Bus_gap}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="4" Text="{Binding Bus_NowIn}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
                         </Grid>
-                    </SwipeView>
+                    </ViewCell>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-            
-        </CollectionView>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="Addcnt" Text="탑승 대기" Command="{Binding AddCnt}"
+                Grid.Column="0" Background="#2c313c" 
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"/>
+
+            <Button x:Name="Minuscnt" Text="탑승 취소" Command="{Binding MinusCnt}"
+                Grid.Column="1" Background="#2c313c" 
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"/>
+
+        </Grid>
     </Grid>
-    <!--프로젝트 생성 시 초기 상태-->
-    <!--<ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
-
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>-->
-
 </ContentPage>
