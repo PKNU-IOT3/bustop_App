@@ -10,8 +10,8 @@
 - MySQL
 
 ## UI
-선행 프로젝트였던 PyQT에 사용한 색상 및 형태를 그대로 차용
-![Bustop_PyQT](https://github.com/PKNU-IOT3/bustop_PyQT)
+- 선행 프로젝트였던 PyQT에 사용한 색상 및 형태를 그대로 차용<br>
+- [Bustop_PyQT](https://github.com/PKNU-IOT3/bustop_PyQT)
 
 ## 로직
 - .xaml , 데이터 바인딩을 활용하여 구현
