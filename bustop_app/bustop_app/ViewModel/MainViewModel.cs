@@ -72,8 +72,6 @@ namespace bustop_app.ViewModel
         }
 
         public ICommand SearchCommand => new RelayCommand(Search);
-        public ICommand AddCnt => new RelayCommand(Add);
-        public ICommand MinusCnt => new RelayCommand(Minus);
 
         private void Search()
         {
@@ -108,26 +106,6 @@ namespace bustop_app.ViewModel
                 }
                 conn.Close();
             }
-        }
-        //탑승 대기 로직
-        private void Add()
-        {
-
-        }
-        //탑승 취소 로직
-        private void Minus()
-        {
-
-        }
-
-        public ICommand DeleteCommand => new RelayCommand<string>(Delete);
-
-        private void Delete(string s)
-        {
-            //if (Items.Contains(s))
-            //{
-            //    Items.Remove(s);
-            //}
         }
     }
 }

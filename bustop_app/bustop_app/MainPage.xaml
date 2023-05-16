@@ -53,7 +53,7 @@
                 FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"/>
 
         <ListView Grid.Row="2" Grid.ColumnSpan="2"
-                        ItemsSource="{Binding Items}">
+                        ItemsSource="{Binding Items}" ItemSelected="ListView_ItemSelected">
             <ListView.Header>
                 <Grid IsVisible="{Binding IsHeaderVisible}" BackgroundColor="#16191d">
                     <Grid.ColumnDefinitions>
@@ -98,13 +98,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Addcnt" Text="탑승 대기" Command="{Binding AddCnt}"
+            <Button x:Name="Addcnt" Text="탑승 대기"
                 Grid.Column="0" Background="#2c313c" 
-                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"/>
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small" 
+                    Clicked="Addcnt_Clicked"/>
 
-            <Button x:Name="Minuscnt" Text="탑승 취소" Command="{Binding MinusCnt}"
+            <Button x:Name="Minuscnt" Text="탑승 취소"
                 Grid.Column="1" Background="#2c313c" 
-                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"/>
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"
+                    Clicked="Minuscnt_Clicked"/>
 
         </Grid>
     </Grid>
