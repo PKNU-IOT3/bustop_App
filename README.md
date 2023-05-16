@@ -18,4 +18,19 @@
 - 버스의 탑승대기/탑승취소 버튼을 통해 해당 버스 탑승 인원 카운팅
 - 카운팅된 인원을 DB로 저장
 
-## 실행화면
+# 실행화면
+## MainPage
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0516_MainPage.png" width=400 />
+
+## 탑승 대기 버튼
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0516_Add.png" width=400 />
+
+## 탑승 취소 버튼
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0516_Minus.png" width=400 />
+
+## 예외처리
+- ### 탑승 인원 50명 초과
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0516_over.png" width=400 />
+
+- ### 탑승 인원 0명일 때 취소 버튼 사용 시
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0516_zero.png" width=400 />
