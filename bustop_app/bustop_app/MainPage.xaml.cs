@@ -9,9 +9,10 @@ namespace bustop_app;
 public partial class MainPage : ContentPage
 {
     private businfor selectedItem;
-    public MainPage(MainViewModel vm)
+    public MainPage()
 	{
 		InitializeComponent();
+        MainViewModel vm = new MainViewModel();
 		BindingContext = vm;
 		Title = "";
 	}
@@ -19,6 +20,40 @@ public partial class MainPage : ContentPage
     private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         selectedItem = (businfor)e.SelectedItem;
+    }
+
+    private void LoadDB(object sender, EventArgs e)
+    {
+        MainViewModel vm = (MainViewModel)BindingContext;
+        vm.Items.Clear();
+        using (MySqlConnection conn = new MySqlConnection(commons.myConnString))
+        {
+            if (conn.State == ConnectionState.Closed)
+                conn.Open();
+
+            var query = @"SELECT * 
+                              FROM bus_table 
+                              ORDER BY bus_idx ASC";
+
+            //MySqlCommand command = new MySqlCommand(query, conn);
+            //MySqlDataReader reader = command.ExecuteReader();
+            var cmd = new MySqlCommand(query, conn);
+            var adapter = new MySqlDataAdapter(cmd);
+            var dSet = new DataSet();
+            adapter.Fill(dSet, "businfor");
+            foreach (DataRow dr in dSet.Tables["businfor"].Rows)
+            {
+                vm.Items.Add(new businfor
+                {
+                    Bus_idx = Convert.ToInt32(dr["bus_idx"]),
+                    Bus_num = Convert.ToString(dr["bus_num"]) + "번",
+                    Bus_cnt = Convert.ToInt32(dr["bus_cnt"]) + "명",
+                    Bus_gap = Convert.ToInt32(dr["bus_gap"]) + "분",
+                    Bus_NowIn = Convert.ToInt32(dr["bus_NowIn"]) + "명"
+                });
+            }
+            conn.Close();
+        }
     }
 
     private async void Addcnt_Clicked(object sender, EventArgs e)
@@ -45,6 +80,7 @@ public partial class MainPage : ContentPage
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+        LoadDB(sender,e);
     }
 
     private async void Minuscnt_Clicked(object sender, EventArgs e)
@@ -68,5 +104,6 @@ public partial class MainPage : ContentPage
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+        LoadDB(sender, e);
     }
 }
