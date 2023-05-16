@@ -80,6 +80,7 @@ public partial class MainPage : ContentPage
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+        await DisplayAlert("탑승 대기", $"{selectedItem.Bus_num} 버스 탑승 대기 완료!", "확인");
         LoadDB(sender,e);
     }
 
@@ -89,7 +90,7 @@ public partial class MainPage : ContentPage
         int bus_cnt = int.Parse(busCntString);
         if (bus_cnt == 0)
         {
-            await DisplayAlert("Warning", "탑승 대기 인원이 0명입니다. 취소가 불가능합니다!", "OK");
+            await DisplayAlert("경고", "탑승 대기 인원이 0명입니다. 취소가 불가능합니다!", "확인");
             return;
         }
         using (MySqlConnection conn = new MySqlConnection(commons.myConnString))
@@ -104,6 +105,7 @@ public partial class MainPage : ContentPage
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+        await DisplayAlert("탑승 취소", $"{selectedItem.Bus_num} 버스 탑승 취소 완료!", "확인");
         LoadDB(sender, e);
     }
 }
