@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="bustop_app.MainPage"
              xmlns:viewmodel="clr-namespace:bustop_app.ViewModel"
-             x:DataType="viewmodel:MainViewModel">
+             x:DataType="viewmodel:MainViewModel" Loaded="ContentPage_Loaded">
 
     <Shell.TitleView>
         <Grid BackgroundColor="#2c313c">

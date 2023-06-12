@@ -3,11 +3,14 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Diagnostics;
 using bustop_app.Logics;
+using System.Net.Http.Headers;
 
 namespace bustop_app;
 
 public partial class MainPage : ContentPage
 {
+    HttpClient client = new HttpClient();//restAPI를 위함
+    businforCollection busInfors = new businforCollection();//restAPI를 위함
     private businfor selectedItem;
     public MainPage()
 	{
@@ -17,11 +20,20 @@ public partial class MainPage : ContentPage
 		Title = "";
 	}
 
+    private async void ContentPage_Loaded(object sender, EventArgs e)
+    {
+        //RestAPI 기본 URI 호출
+        client.BaseAddress = new Uri("https://localhost:7057/"); // RestAPI 서버 기본 URL
+        //헤더 설정
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    }
+
     private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         selectedItem = (businfor)e.SelectedItem;
     }
 
+    //LoadDB는 MainPage.xaml.cs 에서 사용하기 위한 Search함수
     private void LoadDB(object sender, EventArgs e)
     {
         MainViewModel vm = (MainViewModel)BindingContext;
