@@ -34,3 +34,13 @@
 
 - ### 탑승 인원 0명일 때 취소 버튼 사용 시
 <img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0516_zero.png" width=400 />
+
+## 변경되어야할 항목
+- 모바일 환경에서의 DB연결 문제를 해결해야함
+- 현재 구현된 상태는 window machine으로 구동하여 MySQL과 연결된 상태
+
+## 0613 수정
+### MySQL -> RestAPI 연결 변경
+- 기존에 MySQL 사용으로 인해 Android Amulator에서 연결 시 오류나는 부분 수정
+- MySQL 대신 해당 DataBase를 API화 시켜 API와 연결 후 정보 출력 성공
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0613_API_success.png" width=400 />
