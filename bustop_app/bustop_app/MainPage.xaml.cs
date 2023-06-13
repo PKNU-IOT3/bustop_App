@@ -23,7 +23,7 @@ public partial class MainPage : ContentPage
     private async void ContentPage_Loaded(object sender, EventArgs e)
     {
         //RestAPI 기본 URI 호출
-        client.BaseAddress = new Uri("https://localhost:7057/"); // RestAPI 서버 기본 URL
+        client.BaseAddress = new Uri("http://210.119.12.69:7058/"); // RestAPI 서버 기본 URL
         //헤더 설정
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }

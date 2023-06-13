@@ -6,16 +6,22 @@ using bustop_app.Logics;
 using System.Data;
 using System.Windows.Input;
 using Google.Protobuf.WellKnownTypes;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Microsoft.Maui.Graphics.Text;
+using Newtonsoft.Json.Linq;
 
 namespace bustop_app.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
         HttpClient client = new HttpClient();//restAPI를 위함
-        businforCollection busInfors = new businforCollection();//restAPI를 위함
-
+        //businforCollection busInfors = new businforCollection();//restAPI를 위함
+        
         public MainViewModel()
         {
+            client.BaseAddress=new Uri("http://210.119.12.69:7058/");//RestAPI 서버 기본 URL
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));//헤더설정
             Items = new ObservableCollection<businfor>();
         }
 
@@ -83,15 +89,33 @@ namespace bustop_app.ViewModel
             //여기 문제 있으니 다시 고쳐보자//
             Items.Clear();
             IsHeaderVisible = true;
-            Items = busInfors;//데이터 바인딩 (기존 GrdResult)
+            //Items = busInfors;//데이터 바인딩 (기존 GrdResult)
             //Api 호출 핵심
             try
             {
                 HttpResponseMessage? response = await client.GetAsync("api/BusTables");
                 response.EnsureSuccessStatusCode();
 
-                var items = await response.Content.ReadAsAsync<IEnumerable<businfor>>();
-                busInfors.CopyForm(items);
+                var busInfors = await response.Content.ReadAsAsync<Object>();
+                var result = Newtonsoft.Json.JsonConvert.SerializeObject(busInfors);
+                var jArray = JArray.Parse(result.ToString());
+                //var items = await response.Content.ReadAsAsync<ObservableCollection<businfor>>();
+                //busInfors.CopyForm(items);
+                foreach (var busInfo in jArray)
+                {
+                    Items.Add(new businfor
+                    {
+                        Bus_idx = Int32.Parse(busInfo["busIdx"].ToString()),
+                        Bus_num = busInfo["busNum"].ToString()+"번",
+                        Bus_cnt = busInfo["busCnt"].ToString()+"명",
+                        Bus_gap = busInfo["busGap"].ToString()+"분",
+                        Bus_NowIn = busInfo["busNowIn"].ToString()+"명"
+                        //Bus_num=$"{busInfo.Bus_num}번",
+                        //Bus_cnt=$"{busInfo.Bus_gap}번",
+                        //Bus_gap=$"{busInfo.Bus_gap}분",
+                        //Bus_NowIn=$"{busInfo.Bus_NowIn}명"
+                    });
+                }
             }
             catch (Newtonsoft.Json.JsonException jEx)
             {
