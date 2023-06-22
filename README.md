@@ -44,3 +44,23 @@
 - 기존에 MySQL 사용으로 인해 Android Amulator에서 연결 시 오류나는 부분 수정
 - MySQL 대신 해당 DataBase를 API화 시켜 API와 연결 후 정보 출력 성공
 <img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0613_API_success.png" width=400 />
+
+## 0622 수정
+### 탑승 대기/취소 버튼 RestAPI와 연동
+- MySQL과의 직접적인 DB 연결 문제를 해결하기 위해 API 사용
+- 탑승 대기/취소 버튼 클릭 시 bus_cnt를 +1/-1
+- 인원수 증/감과 동시에 버스 정보 재 출력
+### 버스 정보 출력 버튼
+- 버스 정보 출력 클릭 시 bool 함수를 이용하여 이미 정보가 출력되어 있는 경우 삭제
+
+### 메인 화면
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_MainPage.png" width=400 />
+
+### 버스 정보 출력 버튼 클릭 시 버스 정보 출력 화면
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_ShowItems.png" width=400 />
+
+### 탑승 대기 / 탑승 취소 버튼 디자인 변경 및 기능 구현
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_function.png" width=400 />
+
+## 실행화면
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_bustop.gif" width=400 />
