@@ -155,6 +155,7 @@ public partial class MainPage : ContentPage
             {
                 await DisplayAlert("탑승 대기", $"{selectedItem.Bus_num} 버스 탑승 대기 완료!", "확인");
                 LoadDB(sender, e);
+                selectedItem = null;//선택된 아이템 해제
             }
             else
             {
@@ -220,6 +221,7 @@ public partial class MainPage : ContentPage
             {
                 await DisplayAlert("탑승 취소", $"{selectedItem.Bus_num} 버스 탑승 취소 완료!", "확인");
                 LoadDB(sender, e);
+                selectedItem = null;//선택된 아이템 해제
             }
             else
             {
