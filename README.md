@@ -54,13 +54,13 @@
 - 버스 정보 출력 클릭 시 bool 함수를 이용하여 이미 정보가 출력되어 있는 경우 삭제
 
 ### 메인 화면
-<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_MainPage.png" width=400 />
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_MainPage.png" width=25% height=15% />
 
 ### 버스 정보 출력 버튼 클릭 시 버스 정보 출력 화면
-<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_ShowItems.png" width=400 />
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_ShowItems.png" width=25% height=15% />
 
 ### 탑승 대기 / 탑승 취소 버튼 디자인 변경 및 기능 구현
-<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_function.png" width=400 />
+<img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_function.png" width=30% height=20% />
 
 ## 실행화면
 <img src="https://raw.githubusercontent.com/PKNU-IOT3/bustop_app/main/images/0622_bustop.gif" width=400 />
