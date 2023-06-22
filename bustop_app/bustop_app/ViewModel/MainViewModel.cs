@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.Maui.Graphics.Text;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 
 namespace bustop_app.ViewModel
 {
@@ -17,12 +18,28 @@ namespace bustop_app.ViewModel
     {
         HttpClient client = new HttpClient();//restAPI를 위함
         //businforCollection busInfors = new businforCollection();//restAPI를 위함
-        
+        //bool isvisible = false;
         public MainViewModel()
         {
-            client.BaseAddress=new Uri("http://210.119.12.69:7058/");//RestAPI 서버 기본 URL
+            client.BaseAddress = new Uri("http://210.119.12.69:7058/");//RestAPI 서버 기본 URL
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));//헤더설정
             Items = new ObservableCollection<businfor>();
+            IsVisible = false;
+            listViewBackgroundColor = Colors.White;
+            PropertyChanged += MainViewModel_PropertyChanged;
+        }
+
+        private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (IsVisible)
+            {
+                ListViewBackgroundColor = Colors.White;
+            }
+            else
+            {
+                ListViewBackgroundColor = Colors.LightGrey;
+            }
+
         }
 
         private ObservableCollection<businfor> items;
@@ -81,54 +98,77 @@ namespace bustop_app.ViewModel
             set => SetProperty(ref isHeaderVisible, value);
         }
 
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get => isVisible;
+            set => SetProperty(ref isVisible, value);
+        }
+
+        private Color listViewBackgroundColor;
+        public Color ListViewBackgroundColor
+        {
+            get => listViewBackgroundColor;
+            set=>SetProperty(ref listViewBackgroundColor, value);
+        }
+
         public ICommand SearchCommand => new RelayCommand(Search);
 
         // 버스 정보 출력 함수 
         private async void Search() 
         {
-            //여기 문제 있으니 다시 고쳐보자//
-            Items.Clear();
-            IsHeaderVisible = true;
-            //Items = busInfors;//데이터 바인딩 (기존 GrdResult)
-            //Api 호출 핵심
-            try
+            if(isVisible==false)
             {
-                HttpResponseMessage? response = await client.GetAsync("api/BusTables");
-                response.EnsureSuccessStatusCode();
-
-                var busInfors = await response.Content.ReadAsAsync<Object>();
-                var result = Newtonsoft.Json.JsonConvert.SerializeObject(busInfors);
-                var jArray = JArray.Parse(result.ToString());
-                //var items = await response.Content.ReadAsAsync<ObservableCollection<businfor>>();
-                //busInfors.CopyForm(items);
-                foreach (var busInfo in jArray)
+                Items.Clear();
+                IsHeaderVisible = true;
+                //Items = busInfors;//데이터 바인딩 (기존 GrdResult)
+                //Api 호출 핵심
+                try
                 {
-                    Items.Add(new businfor
+                    HttpResponseMessage? response = await client.GetAsync("api/BusTables");
+                    response.EnsureSuccessStatusCode();
+
+                    var busInfors = await response.Content.ReadAsAsync<Object>();
+                    var result = Newtonsoft.Json.JsonConvert.SerializeObject(busInfors);
+                    var jArray = JArray.Parse(result.ToString());
+                    //var items = await response.Content.ReadAsAsync<ObservableCollection<businfor>>();
+                    //busInfors.CopyForm(items);
+                    foreach (var busInfo in jArray)
                     {
-                        Bus_idx = Int32.Parse(busInfo["busIdx"].ToString()),
-                        Bus_num = busInfo["busNum"].ToString()+"번",
-                        Bus_cnt = busInfo["busCnt"].ToString()+"명",
-                        Bus_gap = busInfo["busGap"].ToString()+"분",
-                        Bus_NowIn = busInfo["busNowIn"].ToString()+"명"
-                        //Bus_num=$"{busInfo.Bus_num}번",
-                        //Bus_cnt=$"{busInfo.Bus_gap}번",
-                        //Bus_gap=$"{busInfo.Bus_gap}분",
-                        //Bus_NowIn=$"{busInfo.Bus_NowIn}명"
-                    });
+                        Items.Add(new businfor
+                        {
+                            Bus_idx = Int32.Parse(busInfo["busIdx"].ToString()),
+                            Bus_num = busInfo["busNum"].ToString() + "번",
+                            Bus_cnt = busInfo["busCnt"].ToString() + "명",
+                            Bus_gap = busInfo["busGap"].ToString() + "분",
+                            Bus_NowIn = busInfo["busNowIn"].ToString() + "명"
+                            //Bus_num=$"{busInfo.Bus_num}번",
+                            //Bus_cnt=$"{busInfo.Bus_gap}번",
+                            //Bus_gap=$"{busInfo.Bus_gap}분",
+                            //Bus_NowIn=$"{busInfo.Bus_NowIn}명"
+                        });
+                    }
+                    isVisible = true;
+                }
+                catch (Newtonsoft.Json.JsonException jEx)
+                {
+                    Console.WriteLine(jEx.Message);
+                    //await(this.ShowMessageAsync("error", jEx.Message, MessageDialogStyle.Affirmative, new MetroDialogSettings()
+                    //{ AnimateShow = true, AnimateHide = true }));
+                }
+                catch (HttpRequestException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    //await(this.ShowMessageAsync("error", ex.Message, MessageDialogStyle.Affirmative, new MetroDialogSettings()
+                    //{ AnimateShow = true, AnimateHide = true }));
                 }
             }
-            catch (Newtonsoft.Json.JsonException jEx)
+            else if(isVisible ==true)
             {
-                Console.WriteLine(jEx.Message);
-                //await(this.ShowMessageAsync("error", jEx.Message, MessageDialogStyle.Affirmative, new MetroDialogSettings()
-                //{ AnimateShow = true, AnimateHide = true }));
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
-                //await(this.ShowMessageAsync("error", ex.Message, MessageDialogStyle.Affirmative, new MetroDialogSettings()
-                //{ AnimateShow = true, AnimateHide = true }));
-            }
+                Items.Clear();
+                IsHeaderVisible=false;
+                isVisible = false;
+            }    
             //Items.Clear();
             //IsHeaderVisible = true;
             //List<businfor> list = new List<businfor>();

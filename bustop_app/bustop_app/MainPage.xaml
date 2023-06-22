@@ -27,85 +27,68 @@
                Source="bustopimage.png"
                BackgroundColor="Transparent"/>
 
-        <!--<Entry Placeholder="Enter task"
-               Text="{Binding Text}"
-               Grid.Row="1"/>-->
-
-        <!--아래 ListView 안의 Swipe 기능은 안드로이드 애뮬레이터로만 확인 및 사용 가능-->
-        <!--
-        <SwipeView>
-            <SwipeView.RightItems>
-                <SwipeItems>
-                    <SwipeItem Text="탑승 취소"
-                                               BackgroundColor="LightCoral"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
-                                               CommandParameter="{Binding .}"/>
-                    <SwipeItem Text="탑승 대기"
-                                               BackgroundColor="LightBlue"/>
-                </SwipeItems>
-            </SwipeView.RightItems>
-        </SwipeView>
-        -->
-
         <Button x:Name="BtnSearch" Text="버스 정보 출력"
                 Command="{Binding SearchCommand}"
                 Grid.Row="1" Grid.Column="1" BackgroundColor="#2c313c"
-                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"/>
-
-        <ListView Grid.Row="2" Grid.ColumnSpan="2"
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="10.5"/>
+        
+        <ListView Grid.Row="2" Grid.ColumnSpan="2" x:Name="bus_listView" BackgroundColor="{Binding ListViewBackgroundColor}"
                         ItemsSource="{Binding Items}" ItemSelected="ListView_ItemSelected">
+
             <ListView.Header>
                 <Grid IsVisible="{Binding IsHeaderVisible}" BackgroundColor="#16191d">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Text="버스 등록 번호" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
-                    <Label Grid.Column="1" Text="버스 번호" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
-                    <Label Grid.Column="2" Text="탑승 대기 인원" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
-                    <Label Grid.Column="3" Text="배차 간격" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
-                    <Label Grid.Column="4" Text="현재 탑승 인원" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="0" Text="No." FontSize="14" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="1" Text="버스 번호" FontSize="14" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="2" Text="대기 인원" FontSize="14" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="3" Text="배차 간격" FontSize="14" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
+                    <Label Grid.Column="4" Text="탑승 인원" FontSize="14" FontFamily="NanumGothic" HorizontalTextAlignment="Center" TextColor="White"/>
                 </Grid>
             </ListView.Header>
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid BackgroundColor="Gainsboro">
+                        <!--<Grid BackgroundColor="Gainsboro">-->
+                        <Grid>    
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Bus_idx}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
-                            <Label Grid.Column="1" Text="{Binding Bus_num}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
-                            <Label Grid.Column="2" Text="{Binding Bus_cnt}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
-                            <Label Grid.Column="3" Text="{Binding Bus_gap}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
-                            <Label Grid.Column="4" Text="{Binding Bus_NowIn}" FontSize="Small" FontFamily="NanumGothic" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="0" Text="{Binding Bus_idx}" FontSize="15" FontFamily="NanumGothic" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Grid.Column="1" Text="{Binding Bus_num}" FontSize="15" FontFamily="NanumGothic" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Grid.Column="2" Text="{Binding Bus_cnt}" FontSize="15" FontFamily="NanumGothic" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Grid.Column="3" Text="{Binding Bus_gap}" FontSize="15" FontFamily="NanumGothic" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Grid.Column="4" Text="{Binding Bus_NowIn}" FontSize="15" FontFamily="NanumGothic" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Addcnt" Text="탑승 대기"
-                Grid.Column="0" Background="#2c313c" 
-                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small" 
+            <Button x:Name="Addcnt" Text="탑승 대기" 
+                Grid.Column="0" BackgroundColor="LightBlue" 
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Medium" 
                     Clicked="Addcnt_Clicked"/>
 
-            <Button x:Name="Minuscnt" Text="탑승 취소"
-                Grid.Column="1" Background="#2c313c" 
-                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Small"
+            <Button x:Name="Minuscnt" Text="탑승 취소" 
+                Grid.Column="1" BackgroundColor="LightCoral"
+                FontFamily="NanumGothic" FontAttributes="Bold" FontSize="Medium"
                     Clicked="Minuscnt_Clicked"/>
 
         </Grid>

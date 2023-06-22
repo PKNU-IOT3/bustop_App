@@ -9,7 +9,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using System.Net.Http.Json;
-
+using Microsoft.Maui.Graphics;
 namespace bustop_app;
 
 public partial class MainPage : ContentPage
@@ -34,6 +34,10 @@ public partial class MainPage : ContentPage
 
     private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
+        if (e.SelectedItem == null)
+        {
+            return;
+        }
         selectedItem = (businfor)e.SelectedItem;
     }
 
@@ -115,6 +119,12 @@ public partial class MainPage : ContentPage
 
     private async void Addcnt_Clicked(object sender, EventArgs e)
     {
+        if(selectedItem==null)
+        {
+            await DisplayAlert("버스 미선택", "탑승하고자 하는 버스를 선택 후 버튼을 사용해주세요.", "확인");
+            return;
+        }
+
         string busCntString = selectedItem.Bus_cnt.Replace("명", "");
         string busNowInString = selectedItem.Bus_NowIn.Replace("명", "");
         
@@ -123,20 +133,21 @@ public partial class MainPage : ContentPage
 
         if (bus_count>=50)
         {
-            await DisplayAlert("Warning", "탑승 인원은 50명을 초과할 수 없습니다!","OK");
+            await DisplayAlert("최대 탑승 인원 초과", "탑승 인원은 50명을 초과할 수 없습니다!","확인");
             return;
         }
         //var strBus_idx = selectedItem.Bus_idx.ToString();
         //var AddBusCnt = $"api/BusTables/{selectedItem.Bus_idx}";
         try
         {
-            var add_businfor = new businfor()
+            // API 서버와 통신할 때 RestAPI 서버를 게시한 프로젝트 - Controllers / BusTables(DB명)Controller.cs의 클래스와 형태를 맞춰야 동작함
+            var add_businfor = new BusTable()
             {
-                Bus_idx = selectedItem.Bus_idx,
-                Bus_num = selectedItem.Bus_num.ToString(),
-                Bus_cnt = (Int32.Parse(selectedItem.Bus_cnt.Replace("명", "")) + 1).ToString()+"명",
-                Bus_gap = selectedItem.Bus_gap.ToString(),
-                Bus_NowIn = selectedItem.Bus_NowIn.ToString()
+                BusIdx = selectedItem.Bus_idx,
+                BusNum = selectedItem.Bus_num.Replace("번", "").ToString(),
+                BusCnt = (Int32.Parse(selectedItem.Bus_cnt.Replace("명", "")) + 1),
+                BusGap = Convert.ToInt32(selectedItem.Bus_gap.Replace("분", "")),
+                BusNowIn = Convert.ToInt32(selectedItem.Bus_NowIn.Replace("명", ""))
             };
             //var content = new StringContent(JsonConvert.SerializeObject(add_businfor),Encoding.UTF8,"application/json");
             var response = await client.PutAsJsonAsync($"api/BusTables/{selectedItem.Bus_idx}",add_businfor);
@@ -179,6 +190,12 @@ public partial class MainPage : ContentPage
 
     private async void Minuscnt_Clicked(object sender, EventArgs e)
     {
+        if (selectedItem == null)
+        {
+            await DisplayAlert("버스 미선택", "탑승하고자 하는 버스를 선택 후 버튼을 사용해주세요.", "확인");
+            return;
+        }
+
         string busCntString = selectedItem.Bus_cnt.Replace("명", "");
         int bus_cnt = int.Parse(busCntString);
         if (bus_cnt == 0)
@@ -186,19 +203,49 @@ public partial class MainPage : ContentPage
             await DisplayAlert("경고", "탑승 대기 인원이 0명입니다. 취소가 불가능합니다!", "확인");
             return;
         }
-        using (MySqlConnection conn = new MySqlConnection(commons.myConnString))
+        try
         {
-            if (conn.State == ConnectionState.Closed) conn.Open();
-            var strBus_idx = selectedItem.Bus_idx.ToString();
-
-            var query = @"UPDATE bus_table SET bus_cnt = bus_cnt-1 WHERE bus_idx = @strBus_idx";
-
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@strBus_idx", strBus_idx);
-            cmd.ExecuteNonQuery();
-            conn.Close();
+            // API 서버와 통신할 때 RestAPI 서버를 게시한 프로젝트 - Controllers / BusTables(DB명)Controller.cs의 클래스와 형태를 맞춰야 동작함
+            var add_businfor = new BusTable()
+            {
+                BusIdx = selectedItem.Bus_idx,
+                BusNum = selectedItem.Bus_num.Replace("번", "").ToString(),
+                BusCnt = (Int32.Parse(selectedItem.Bus_cnt.Replace("명", "")) - 1),
+                BusGap = Convert.ToInt32(selectedItem.Bus_gap.Replace("분", "")),
+                BusNowIn = Convert.ToInt32(selectedItem.Bus_NowIn.Replace("명", ""))
+            };
+            //var content = new StringContent(JsonConvert.SerializeObject(add_businfor),Encoding.UTF8,"application/json");
+            var response = await client.PutAsJsonAsync($"api/BusTables/{selectedItem.Bus_idx}", add_businfor);
+            if (response.IsSuccessStatusCode)
+            {
+                await DisplayAlert("탑승 취소", $"{selectedItem.Bus_num} 버스 탑승 취소 완료!", "확인");
+                LoadDB(sender, e);
+            }
+            else
+            {
+                var errorResponse = await response.Content.ReadAsStringAsync();
+                await DisplayAlert("실패", $"{errorResponse}", "확인");
+            }
         }
-        await DisplayAlert("탑승 취소", $"{selectedItem.Bus_num} 버스 탑승 취소 완료!", "확인");
-        LoadDB(sender, e);
+        catch (Newtonsoft.Json.JsonException jEx)
+        {
+            Console.WriteLine(jEx.Message);
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        //using (MySqlConnection conn = new MySqlConnection(commons.myConnString))
+        //{
+        //    if (conn.State == ConnectionState.Closed) conn.Open();
+        //    var strBus_idx = selectedItem.Bus_idx.ToString();
+
+        //    var query = @"UPDATE bus_table SET bus_cnt = bus_cnt-1 WHERE bus_idx = @strBus_idx";
+
+        //    MySqlCommand cmd = new MySqlCommand(query, conn);
+        //    cmd.Parameters.AddWithValue("@strBus_idx", strBus_idx);
+        //    cmd.ExecuteNonQuery();
+        //    conn.Close();
+        //}
     }
 }

@@ -14,4 +14,17 @@ namespace bustop_app.ViewModel
         public string Bus_gap { get; set; }
         public string Bus_NowIn { get; set; }
     }
+    public class BusTable
+    {
+        public int BusIdx { get; set; }
+
+        public string BusNum { get; set; } = null!;
+
+        public int BusCnt { get; set; }
+
+        public int BusGap { get; set; }
+
+        public int BusNowIn { get; set; }
+    }
+
 }
