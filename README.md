@@ -14,7 +14,7 @@
 - [Bustop_PyQT](https://github.com/PKNU-IOT3/bustop_PyQT)
 
 ## 로직
-- .xaml , 데이터 바인딩을 활용하여 구현
+- .xaml,데이터 바인딩을 활용하여 구현
 - 버스의 탑승대기/탑승취소 버튼을 통해 해당 버스 탑승 인원 카운팅
 - 카운팅된 인원을 DB로 저장
 
