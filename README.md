@@ -7,7 +7,7 @@
 ## 기술스택
 - C#
 - .Net MAUI
-- MySQL
+- RESTful API
 
 ## UI
 - 선행 프로젝트였던 PyQT에 사용한 색상 및 형태를 그대로 차용<br>
