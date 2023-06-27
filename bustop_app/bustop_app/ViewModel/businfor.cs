@@ -14,7 +14,7 @@ namespace bustop_app.ViewModel
         public string Bus_gap { get; set; }
         public string Bus_NowIn { get; set; }
     }
-    public class BusTable
+    public class BusTable // RESTful API 프로젝트의 Models/BusTable.cs 의 BusTable class와 구조, 변수를 동일하게 설정해줘야 통신이 가능함
     {
         public int BusIdx { get; set; }
 

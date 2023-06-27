@@ -51,9 +51,9 @@ public partial class MainPage : ContentPage
             HttpResponseMessage? response = await client.GetAsync("api/BusTables");
             response.EnsureSuccessStatusCode();
 
-            var busInfors = await response.Content.ReadAsAsync<Object>();
-            var result = Newtonsoft.Json.JsonConvert.SerializeObject(busInfors);
-            var jArray = JArray.Parse(result.ToString());
+            var busInfors = await response.Content.ReadAsAsync<Object>();//Object 형태로 받아온 busInfors를
+            var result = Newtonsoft.Json.JsonConvert.SerializeObject(busInfors);//Json형태로 변환하여 result에 저장
+            var jArray = JArray.Parse(result.ToString());//result를 String 형태로 변환 후 JArray형태로 변환
             foreach (var busInfo in jArray)
             {
                 vm.Items.Add(new businfor

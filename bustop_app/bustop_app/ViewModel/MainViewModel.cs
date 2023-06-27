@@ -26,7 +26,7 @@ namespace bustop_app.ViewModel
             Items = new ObservableCollection<businfor>();
             IsVisible = false;
             listViewBackgroundColor = Colors.White;
-            PropertyChanged += MainViewModel_PropertyChanged;
+            PropertyChanged += MainViewModel_PropertyChanged; // 바인딩한 속성값의 변경을 감지하고, 변경될때마다 MainViewMoel_PropertyChanged 함수 호출
         }
 
         private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -98,7 +98,7 @@ namespace bustop_app.ViewModel
             set => SetProperty(ref isHeaderVisible, value);
         }
 
-        private bool isVisible;
+        private bool isVisible; //false로 설정되어있는 초기 상태, isVisible=false --> ListView에 데이터가 뿌려지지 않은 상태
         public bool IsVisible
         {
             get => isVisible;
