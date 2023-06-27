@@ -54,8 +54,6 @@ public partial class MainPage : ContentPage
             var busInfors = await response.Content.ReadAsAsync<Object>();
             var result = Newtonsoft.Json.JsonConvert.SerializeObject(busInfors);
             var jArray = JArray.Parse(result.ToString());
-            //var items = await response.Content.ReadAsAsync<ObservableCollection<businfor>>();
-            //busInfors.CopyForm(items);
             foreach (var busInfo in jArray)
             {
                 vm.Items.Add(new businfor
@@ -65,10 +63,6 @@ public partial class MainPage : ContentPage
                     Bus_cnt = busInfo["busCnt"].ToString() + "명",
                     Bus_gap = busInfo["busGap"].ToString() + "분",
                     Bus_NowIn = busInfo["busNowIn"].ToString() + "명"
-                    //Bus_num=$"{busInfo.Bus_num}번",
-                    //Bus_cnt=$"{busInfo.Bus_gap}번",
-                    //Bus_gap=$"{busInfo.Bus_gap}분",
-                    //Bus_NowIn=$"{busInfo.Bus_NowIn}명"
                 });
             }
         }
